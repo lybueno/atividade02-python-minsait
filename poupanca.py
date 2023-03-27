@@ -54,16 +54,25 @@ class Poupanca(Conta):
                 return -1.0
 
 
-    def calculate_income_compound_method(self, time: str) -> float:
-        time_measure = time[-1]
-        time = int(time[:-1])
-        
-        processed_rate = self.process_rate_compound_method(time_measure)
 
-        if(processed_rate > 0):
-            income = self.balance * pow(1 + processed_rate, time)
-            return income
+    # O calculo do rendimento foi feito utilizando juros compostos
+    def calculate_income_compound_method(self, time: str) -> float:
+        
+        if(len(time) > 1):
+            time_measure = time[-1]
+            time = int(time[:-1])
+        
+            if(time > 0):
+                processed_rate = self.process_rate_compound_method(time_measure)
+            else:
+                raise TypeError("Time measure is not correctly typed")
+
+            if(processed_rate > 0):
+                income = self.balance * pow(1 + processed_rate, time)
+                return income
+            else:
+                raise Exception("Time measure is not valid")
         else:
-            raise Exception("Time measure is not valid")
+            raise TypeError("Time measure is not correctly typed")
 
 

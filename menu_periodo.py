@@ -1,5 +1,5 @@
 
-class ExibeMenu():
+class MenuPeriodo():
 
     def exibir(self) -> str:
         return input("[s] = segundos"
