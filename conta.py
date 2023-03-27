@@ -40,5 +40,5 @@ class Conta(ABC):
 
 """
     A Classe Conta é abstrata, pois para a regra de negócio não faz sentido instanciar uma conta e sim conta corrente e poupança
-    Não foi implementado o setter do atributo account_id pois não é comendado deixar código cliente alterar o ID de um objeto
+    Não foi implementado o setter do atributo account_id pois não é recomendado deixar código cliente alterar o ID de um objeto
 """
