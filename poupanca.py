@@ -2,9 +2,9 @@ from conta import Conta
 
 class Poupanca(Conta):
 
-    def __init__(self, id_account, balance, yield_rate):
+    def __init__(self, id_account: int, balance: float, yield_rate: float):
         super().__init__(id_account, balance)
-        self._yield_rate = yield_rate
+        self._yield_rate: float = yield_rate
 
 
     @property
@@ -33,48 +33,17 @@ class Poupanca(Conta):
         else:
             raise Exception("Amount exceeds your limit account.")
         
-    def __convert_to_mounthly_rate(self) -> float:
-        return (((1 + (self.yield_rate/100)) ** (1/12)) - 1)
-        
-        
-    def __process_rate_compound_method(self, time_measure: str) -> float:
-        
-        match time_measure:
-            case 's':
-                return self.__convert_to_mounthly_rate()/(30*24*60*60)
-            case 'm':
-                return self.__convert_to_mounthly_rate()/(30*24*60)
-            case 'h':
-                return self.__convert_to_mounthly_rate()/(30*24)
-            case 'D':
-                return self.__convert_to_mounthly_rate()/30
-            case 'M':
-                return self.__convert_to_mounthly_rate()
-            case 'A':
-                return self.yield_rate/100
-            case _:
-                return -1.0
-
-
 
     # O calculo do rendimento foi feito utilizando juros compostos
-    def calculate_income_compound_method(self, time: str) -> float:
-        
-        if(len(time) > 1):
-            time_measure = time[-1]
-            time = int(time[:-1])
-        
-            if(time > 0):
-                processed_rate = self.__process_rate_compound_method(time_measure)
-            else:
-                raise TypeError("Time measure is not correctly typed")
-
-            if(processed_rate >= 0):
-                income = self.balance * pow(1 + processed_rate, time)
-                return income
-            else:
-                raise Exception("Time measure is not valid")
+    def calculate_income_compound_method(self, processed_rate: float, time: int) -> float:
+        if(processed_rate >= 0):
+            income = self.balance * pow(1 + processed_rate, time)
+            return income
         else:
-            raise TypeError("Time measure is not correctly typed")
+            raise Exception("Time measure is not valid")
 
+# Os metodos de calculo de taxa equivalente e tratamento do tempo foram retirados para que a classe nao
+# possua responsabilidades que nao dizem respeito a sua regra de negócio (a Poupanca deve calcular o 
+# rendimento, apenas). A responsabilidade do calculo da taxa equivalente agora e da classe RateFormatter 
+# e, do tratamento da quantidade de tempo da classe TimeFormatter
 

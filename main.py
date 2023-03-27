@@ -1,6 +1,8 @@
 from contaCorrente import ContaCorrente
 from poupanca import Poupanca
 from menu_periodo import MenuPeriodo
+from rateFormatter import RateFormatter
+from timeFormatter import TimeFormatter
 
 ##### testando metodos da conta corrente #######
 contaCorrente = ContaCorrente(account_id=1, balance=1000.0, account_limit=100.0)
@@ -29,8 +31,15 @@ poupanca = Poupanca(id_account=2, balance=1000.0, yield_rate=10)
 ## exibir opções
 menu = MenuPeriodo()
 periodo_para_calcular_rendimento = menu.exibir()
+
+formatador_taxa = RateFormatter(rate=poupanca.yield_rate)
+taxa = formatador_taxa.process_rate_compound_method(periodo_para_calcular_rendimento)
+
+formatador_tempo = TimeFormatter(periodo_para_calcular_rendimento)
+tempo = formatador_tempo.format_time()
+
 ## testando metodo de rendimento
-print(f"{round(poupanca.calculate_income_compound_method(periodo_para_calcular_rendimento), 2)}")
+print(f"{round(poupanca.calculate_income_compound_method(taxa, tempo), 2)}")
 
 # verificando se é lançado erro ao depositar valor negativo
 #poupanca.deposit(-100.0)

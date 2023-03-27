@@ -4,7 +4,7 @@ class ContaCorrente(Conta):
 
     def __init__(self, account_id: int, balance: float, account_limit: float):
         super().__init__(account_id, balance)
-        self._account_limit = account_limit
+        self._account_limit: float = account_limit
 
 
     @property
