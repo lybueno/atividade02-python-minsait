@@ -7,7 +7,7 @@ class Conta(ABC):
         self._balance: float = balance
 
 
-    def is_valid(self, value: float) -> bool:
+    def _is_valid(self, value: float) -> bool:
         return value >= 0.0
     
 
@@ -23,7 +23,7 @@ class Conta(ABC):
 
     @balance.setter
     def balance(self, new_balance: float):
-        if(self.is_valid(new_balance)):
+        if(self._is_valid(new_balance)):
             self._balance = new_balance
         else:
             raise ValueError("New balance cannot be negative")
