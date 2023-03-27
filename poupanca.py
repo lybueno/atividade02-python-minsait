@@ -41,15 +41,15 @@ class Poupanca(Conta):
         
         match time_measure:
             case 's':
-                return self.__convert_to_mounthly_rate/(30*24*60*60)
+                return self.__convert_to_mounthly_rate()/(30*24*60*60)
             case 'm':
-                return self.__convert_to_mounthly_rate/(30*24*60)
+                return self.__convert_to_mounthly_rate()/(30*24*60)
             case 'h':
-                return self.__convert_to_mounthly_rate/(30*24)
+                return self.__convert_to_mounthly_rate()/(30*24)
             case 'D':
-                return self.__convert_to_mounthly_rate/30
+                return self.__convert_to_mounthly_rate()/30
             case 'M':
-                return self.__convert_to_mounthly_rate
+                return self.__convert_to_mounthly_rate()
             case 'A':
                 return self.yield_rate/100
             case _:
