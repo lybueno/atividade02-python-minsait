@@ -14,40 +14,42 @@ class Poupanca(Conta):
 
     @yield_rate.setter
     def yield_rate(self, new_rate):
-        if(self.is_valid(new_rate)):
+        if(self._is_valid(new_rate)):
             self._yield_rate = new_rate
 
 
     def deposit(self, amount: float):
-        if(self.is_valid(amount)):
+        if(self._is_valid(amount)):
             self.balance += amount
         else:
             raise ValueError("Amount cannot be negative.")
         
 
     def withdraw(self, amount: float):        
-        if(not(self.is_valid(amount))):
+        if(not(self._is_valid(amount))):
             raise ValueError("Amount cannot be negative")
         if(amount <= self.balance):
             self.balance -= amount
         else:
             raise Exception("Amount exceeds your limit account.")
         
+    def __convert_to_mounthly_rate(self) -> float:
+        return (((1 + (self.yield_rate/100)) ** (1/12)) - 1)
         
-    def process_rate_compound_method(self, time_measure: str) -> float:
-        mounth_converted = (((1 + (self.yield_rate/100)) ** (1/12)) - 1)
-
+        
+    def __process_rate_compound_method(self, time_measure: str) -> float:
+        
         match time_measure:
             case 's':
-                return mounth_converted/(30*24*60*60)
+                return self.__convert_to_mounthly_rate/(30*24*60*60)
             case 'm':
-                return mounth_converted/(30*24*60)
+                return self.__convert_to_mounthly_rate/(30*24*60)
             case 'h':
-                return mounth_converted/(30*24)
+                return self.__convert_to_mounthly_rate/(30*24)
             case 'D':
-                return mounth_converted/30
+                return self.__convert_to_mounthly_rate/30
             case 'M':
-                return mounth_converted
+                return self.__convert_to_mounthly_rate
             case 'A':
                 return self.yield_rate/100
             case _:
@@ -63,11 +65,11 @@ class Poupanca(Conta):
             time = int(time[:-1])
         
             if(time > 0):
-                processed_rate = self.process_rate_compound_method(time_measure)
+                processed_rate = self.__process_rate_compound_method(time_measure)
             else:
                 raise TypeError("Time measure is not correctly typed")
 
-            if(processed_rate > 0):
+            if(processed_rate >= 0):
                 income = self.balance * pow(1 + processed_rate, time)
                 return income
             else:
