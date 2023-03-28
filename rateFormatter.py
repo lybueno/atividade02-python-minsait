@@ -41,7 +41,7 @@ class RateFormatter():
                     case 'A':
                         return self.rate/100
                     case _:
-                        return -1.0, 0
+                        return -1.0
             else:
                 raise TypeError("Time measure is not correctly typed")
             
